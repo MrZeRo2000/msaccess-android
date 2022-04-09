@@ -7,11 +7,21 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/extract_file_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Extract file"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        >
+    </Button>
+
+    <Button
         android:id="@+id/open_file_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Open file"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/extract_file_button"
         app:layout_constraintLeft_toLeftOf="parent"
         >
     </Button>

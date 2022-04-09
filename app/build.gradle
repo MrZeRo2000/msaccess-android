@@ -35,6 +35,8 @@ dependencies {
 
     implementation 'com.healthmarketscience.jackcess:jackcess:4.0.1'
 
+    implementation "com.github.junrar:junrar:7.5.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.romanpulov:jutils-core:0.3.12'

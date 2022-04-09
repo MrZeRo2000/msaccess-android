@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.junrar.Junrar;
+import com.github.junrar.exception.RarException;
 import com.healthmarketscience.jackcess.Column;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
@@ -28,6 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PICK_FILE = 2;
+    private static final String ARCHIVE_FILE_NAME = "Cat2000.rar";
     private static final String FILE_NAME = "Cat2000.mdb";
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 // Handle the returned Uri
                 try (
                         InputStream inputStream = getContentResolver().openInputStream(uri);
-                        OutputStream outputStream = openFileOutput(FILE_NAME, MODE_PRIVATE);
+                        OutputStream outputStream = openFileOutput(ARCHIVE_FILE_NAME, MODE_PRIVATE);
                 )
                 {
                     FileUtils.copyStream(inputStream, outputStream);
@@ -63,6 +66,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
+
+        Button extractFileButton = findViewById(R.id.extract_file_button);
+        extractFileButton.setOnClickListener(v -> {
+            File file = new File(getFilesDir(), FILE_NAME);
+            if (file.exists()) {
+                file.delete();
+            }
+            File archiveFile = new File(getFilesDir(), ARCHIVE_FILE_NAME);
+            if (archiveFile.exists()) {
+                try {
+                    Junrar.extract(archiveFile, getFilesDir(), "123456");
+                    displayMessage("Extracted successfully");
+                } catch (IOException | RarException e) {
+                    displayMessage("Error extracting rar:" + e.getMessage());
+                    e.printStackTrace();
+                }
+            } else {
+                displayMessage("File " + ARCHIVE_FILE_NAME + " does not exist");
+            }
+        });
+
         Button openFileButton = findViewById(R.id.open_file_button);
         openFileButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
